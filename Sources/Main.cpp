@@ -107,42 +107,42 @@ nkentseu::Application* CreateParticlesDemo(const nkentseu::ApplicationProperties
 
 //Fonction principale modifiée pour supporter multiple démos
 nkentseu::Application* Main(nkentseu::Args args) {
-    // // Charger la configuration des démos
-    // LoadDemoConfig("demos.config");
+    // Charger la configuration des démos
+     LoadDemoConfig("demos.config");
     
-    // // Lire la démo par défaut depuis app.config
-    // std::string defaultDemo = GetConfigValue("app.config", "defaultdemo");
-    // if (defaultDemo.empty()) {
-    //     defaultDemo = "randomwalk"; // Valeur par défaut si non trouvée
-    // }
+     // Lire la démo par défaut depuis app.config
+     std::string defaultDemo = GetConfigValue("app.config", "defaultdemo");
+     if (defaultDemo.empty()) {
+         defaultDemo = "randomwalk"; // Valeur par défaut si non trouvée
+     }
     
-    // std::string demoName = defaultDemo;
+     std::string demoName = defaultDemo;
     
-    // // Chercher l'argument --demo (qui écrase la config)
-    // for (size_t i = 0; i < args.size(); ++i) {
-    //     if (args[i] == "--demo" && i + 1 < args.size()) {
-    //         demoName = args[i + 1];
-    //         break;
-    //     }
-    // }
+     // Chercher l'argument --demo (qui écrase la config)
+     for (size_t i = 0; i < args.size(); ++i) {
+         if (args[i] == "--demo" && i + 1 < args.size()) {
+             demoName = args[i + 1];
+             break;
+         }
+     }
     
-    // // Trouver la démo demandée
-    // DemoConfig* demoConfig = FindDemo(demoName);
-    // if (!demoConfig) {
-    //     nkentseu::Log.Error("Demo not found or disabled: {0}", demoName);
-    //     nkentseu::Log.Info("Available demos:");
-    //     for (const auto& demo : availableDemos) {
-    //         if (demo.enabled) {
-    //             nkentseu::Log.Info("  {0}: {1}", demo.name, demo.description);
-    //         }
-    //     }
-    //     return nullptr;
-    // }
+     // Trouver la démo demandée
+     DemoConfig* demoConfig = FindDemo(demoName);
+     if (!demoConfig) {
+         nkentseu::Log.Error("Demo not found or disabled: {0}", demoName);
+         nkentseu::Log.Info("Available demos:");
+         for (const auto& demo : availableDemos) {
+             if (demo.enabled) {
+                 nkentseu::Log.Info("  {0}: {1}", demo.name, demo.description);
+             }
+         }
+         return nullptr;
+     }
     
-    // nkentseu::Log.Info("Loading demo: {0} - {1}", demoConfig->name, demoConfig->description);
+     nkentseu::Log.Info("Loading demo: {0} - {1}", demoConfig->name, demoConfig->description);
     
     // // Créer les propriétés de l'application
-    // auto props = nkentseu::Application::CreatePropertiesFromConfig("app.config");
-    // return demoConfig->creator(props);
-    return new nkentseu::Count(nkentseu::Application::CreatePropertiesFromConfig("app.config"));
+     auto props = nkentseu::Application::CreatePropertiesFromConfig("app.config");
+     return demoConfig->creator(props);
+    //return new nkentseu::Count(nkentseu::Application::CreatePropertiesFromConfig("app.config"));
 }
